@@ -76,6 +76,24 @@
     <build>
         <pluginManagement>
             <plugins>
+<plugin>
+  <groupId>org.graalvm.buildtools</groupId>
+  <artifactId>native-maven-plugin</artifactId>
+  <version>1.17.0</version>
+  <extensions>true</extensions>
+  <executions>
+    <execution>
+      <id>build-native</id>
+      <goals>
+        <goal>compile-no-fork</goal>
+      </goals>
+      <phase>package</phase>
+    </execution>
+  </executions>
+  <configuration>
+      <mainClass>org.mustangproject.commandline.Main</mainClass>
+  </configuration>
+</plugin>
                 <plugin>
                     <!-- mvn help:effective-pom will otherwise tell it just defaults
                              to 2.3.2 - which does not release in the maven repo, and neither shows any
@@ -238,6 +256,27 @@
                 </plugins>
             </build>
         </profile>
+<profile>
+        <id>native</id>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.graalvm.buildtools</groupId>
+                    <artifactId>native-maven-plugin</artifactId>
+                    <version>1.1.17</version> <!-- Use the latest version -->
+                    <executions>
+                        <execution>
+                            <id>build-native</id>
+                            <goals>
+                                <goal>compile-no-fork</goal>
+                            </goals>
+                            <phase>package</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
     </profiles>
     <licenses>
         <license>
