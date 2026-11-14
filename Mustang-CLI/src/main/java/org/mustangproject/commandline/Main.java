@@ -55,6 +55,7 @@ import org.mustangproject.ZUGFeRD.ZUGFeRDExporterFromPDFA;
 import org.mustangproject.ZUGFeRD.ZUGFeRDImporter;
 import org.mustangproject.ZUGFeRD.ZUGFeRDVisualizer;
 import org.mustangproject.validator.ZUGFeRDValidator;
+import org.mustangproject.validator.RhinoConfiguration;
 import org.slf4j.LoggerFactory;
 
 /***
@@ -418,6 +419,9 @@ public class Main {
 
 			boolean disableFileLogging = false;
 			try {
+			    // Must happen before VeraPDF or Rhino initialization
+			    RhinoConfiguration.initialize();
+
 				cmd = parser.parse(options, args);
 
 				// Retrieve all options

@@ -29,6 +29,7 @@ public class ValidatorFileWalker
 	protected PathMatcher matcher;
 	protected ZUGFeRDValidator zul;
 	protected int fileCount = 1;
+	protected int valids = 0;
 	protected boolean expectValid = true;
 	protected boolean allValid = true;
 	protected String[] excludedFiles = {};
@@ -75,11 +76,27 @@ public class ValidatorFileWalker
 							.asString()
 							.isEqualTo(expectedString);
 
+					valids++;
 					} catch (AssertionError ae) {
 						thisResultString = "invalid";
 						allValid = false;
-					}
-					LOGGER.info("\n@{} Testing file {}: {} ({}) ", dateFormat.format(date), fileCount++, thisResultString, file);
+					} catch (Throwable t) {
+
+    if (t.getClass().getName().contains("UnsupportedFeatureError")) {
+						thisResultString = "invalid";
+						allValid = false;
+		
+        System.err.println("Unsupported GraalVM feature:");
+        t.printStackTrace();
+    } else {
+						thisResultString = "invalid";
+						allValid = false;
+		
+        System.err.println("Invoice validation failed:");
+        t.printStackTrace();
+    }
+}
+					LOGGER.info("\n@{} Testing file {}: {} (sum:{}) ({}) ", dateFormat.format(date), fileCount++, thisResultString, valids, file);
 				}
 			}
 		}

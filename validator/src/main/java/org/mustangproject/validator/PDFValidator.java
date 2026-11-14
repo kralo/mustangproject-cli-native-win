@@ -49,7 +49,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
 /***
  *  Validates the PDF/A part of a Factur-X invoice
  */
@@ -95,6 +96,15 @@ public class PDFValidator extends Validator {
 		final long startPDFTime = Calendar.getInstance().getTimeInMillis();
 
 		// Step 1 Validate PDF
+/*ContextFactory factory = ContextFactory.getGlobal();
+
+factory.call(cx -> {
+    cx.setOptimizationLevel(-1); // for rhino pdf
+    return null;
+});		
+*/
+
+RhinoConfiguration.verify();
 
 		VeraGreenfieldFoundryProvider.initialise();
 		// Default validator config
